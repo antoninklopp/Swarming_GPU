@@ -1,3 +1,5 @@
+This repository started as a fork from https://github.com/MaximilienLC/threaded_boids
+
 ## boids_basic_threading
 
 Boids Simulation using:
