@@ -5,7 +5,7 @@
 #include <iostream>
 
 #define NB_OF_BOIDS 1000
-#define NB_BLOCKS 2000
+#define NB_BLOCKS 64
 #define VISION_DISTANCE 2
 #define COHESION_PARAMETER 50
 #define SEPARATION_PARAMETER 5
@@ -89,5 +89,5 @@ void computeNewVelocity(float *old_velocity, float *cohesion, float *separation,
 }
 
 void cudaComputeNewVelocity(float *old_velocity, float *cohesion, float *separation, float *alignment, float *new_velocity) {
-	computeNewVelocity << <20, 20 >> > (old_velocity, cohesion, separation, alignment, new_velocity);
+	computeNewVelocity << <64, 64 >> > (old_velocity, cohesion, separation, alignment, new_velocity);
 }
