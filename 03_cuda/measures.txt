@@ -1,6 +1,6 @@
 # 03_cuda
 
-# FLOCKS    MEAN_TIME per frame # pour 100 boids
+# FLOCKS    MEAN_TIME per frame # pour 100 boids block 64
 
 10 0.0267762
 20 0.0332105
@@ -23,7 +23,7 @@
 190 0.12316
 200 0.126895
 
-# FLOCKS 1000 boids - 1 thread par boid
+# FLOCKS 1000 boids - block 64
 
 10 0.346521
 20 0.607785
