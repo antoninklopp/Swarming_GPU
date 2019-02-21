@@ -4,9 +4,29 @@
 using namespace std;
 
 extern void cudaComputeNewVelocity(float *old_velocity, float *cohesion, float *separation, float *alignment, float *new_velocity);
-extern void cudaComputeCohesion(float* boid_positions, float* velocity, float *new_velocity, int size); 
+extern void cudaComputeVelocity(float* boid_positions, float* velocity, float *new_velocity, int size); 
+
+float *Flock::dev_old_velocity; 
+float *Flock::dev_new_velocity;
+float *Flock::dev_cohesion; 
+float *Flock::dev_separation; 
+float *Flock::dev_alignment; 
+float *Flock::dev_position;
+bool Flock::initialized;
 
 Flock::Flock(Color color) {
+
+	if (!initialized){
+		cudaMalloc((void**)&dev_old_velocity, NB_OF_BOIDS * 2 * sizeof(float));
+		cudaMalloc((void**)&dev_new_velocity, NB_OF_BOIDS * 2 * sizeof(float));
+
+		cudaMalloc((void**)&dev_cohesion, NB_OF_BOIDS * 2 * sizeof(float));
+		cudaMalloc((void**)&dev_separation, NB_OF_BOIDS * 2 * sizeof(float));
+		cudaMalloc((void**)&dev_alignment, NB_OF_BOIDS * 2 * sizeof(float));
+
+		cudaMalloc((void**)&dev_position, NB_OF_BOIDS * 2 * sizeof(float));
+		initialized = true; 
+	}
 
 	for (int i = 0; i < NB_OF_BOIDS; i++) {
 
@@ -77,10 +97,6 @@ void Flock::drawBoids() {
 
 void Flock::moveBoidsToNewPositions() {
 
-	float *dev_old_velocity, *dev_new_velocity;
-
-	float *dev_cohesion, *dev_separation, *dev_alignment, *dev_position;
-
 	float old_velocity[NB_OF_BOIDS * 2];
 	float new_velocity[NB_OF_BOIDS * 2];
 
@@ -89,15 +105,6 @@ void Flock::moveBoidsToNewPositions() {
 	float alignment[NB_OF_BOIDS * 2];
 
 	float position[NB_OF_BOIDS * 2];
-
-	cudaMalloc((void**)&dev_old_velocity, NB_OF_BOIDS * 2 * sizeof(float));
-	cudaMalloc((void**)&dev_new_velocity, NB_OF_BOIDS * 2 * sizeof(float));
-
-	cudaMalloc((void**)&dev_cohesion, NB_OF_BOIDS * 2 * sizeof(float));
-	cudaMalloc((void**)&dev_separation, NB_OF_BOIDS * 2 * sizeof(float));
-	cudaMalloc((void**)&dev_alignment, NB_OF_BOIDS * 2 * sizeof(float));
-
-	cudaMalloc((void**)&dev_position, NB_OF_BOIDS * 2 * sizeof(float));
 
 	for(int i = 0; i < this->boids.size(); i++) {
 
@@ -124,7 +131,7 @@ void Flock::moveBoidsToNewPositions() {
 	cudaMemcpy(dev_position, position, NB_OF_BOIDS * 2 * sizeof(float), cudaMemcpyHostToDevice);
 	cudaMemcpy(dev_old_velocity, old_velocity, NB_OF_BOIDS * 2 * sizeof(float), cudaMemcpyHostToDevice);
 
-	cudaComputeCohesion(dev_position, dev_old_velocity, dev_new_velocity, NB_OF_BOIDS);
+	cudaComputeVelocity(dev_position, dev_old_velocity, dev_new_velocity, NB_OF_BOIDS);
 
 	cudaMemcpy(new_velocity, dev_new_velocity, NB_OF_BOIDS * 2 * sizeof(float), cudaMemcpyDeviceToHost);
 
@@ -137,12 +144,12 @@ void Flock::moveBoidsToNewPositions() {
 
 	// cudaMemcpy(new_velocity, dev_new_velocity, NB_OF_BOIDS * 2 * sizeof(int), cudaMemcpyDeviceToHost);
 
-	cudaFree(dev_old_velocity);
-	cudaFree(dev_new_velocity);
+	// cudaFree(dev_old_velocity);
+	// cudaFree(dev_new_velocity);
 
-	cudaFree(dev_cohesion);
-	cudaFree(dev_separation);
-	cudaFree(dev_alignment);
+	// cudaFree(dev_cohesion);
+	// cudaFree(dev_separation);
+	// cudaFree(dev_alignment);
 	
 	cudaDeviceSynchronize();
 

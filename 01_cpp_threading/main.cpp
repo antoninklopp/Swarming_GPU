@@ -72,7 +72,7 @@ void updateEverything() {
 	if (measure == 20){
 		_time /=20; 
 		std::cout << nb_flocks <<  " " << _time << endl; 
-		// exit(0); 
+		exit(0); 
 	}
 
 }

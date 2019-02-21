@@ -15,6 +15,12 @@ class Flock {
 
 public:
 
+	static float *dev_old_velocity, *dev_new_velocity;
+
+	static float *dev_cohesion, *dev_separation, *dev_alignment, *dev_position;
+
+	static bool initialized; 
+
 	Flock(Color color);
 
 	std::vector<Boid> boids;

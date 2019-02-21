@@ -62,7 +62,7 @@ void applyRules(float* boid_positions, float* velocity, float *new_velocity, int
 }
 
 __global__
-void computeCohesion(float* boid_positions, float* velocity, float *new_velocity, int size){
+void computeVelocity(float* boid_positions, float* velocity, float *new_velocity, int size){
 	int tid = threadIdx.x + blockIdx.x * gridDim.x; // handle the data at this index
 
 	while (tid < NB_OF_BOIDS) {
@@ -71,8 +71,8 @@ void computeCohesion(float* boid_positions, float* velocity, float *new_velocity
 	}
 }
 
-void cudaComputeCohesion(float* boid_positions, float* velocity, float *new_velocity, int size){
-	computeCohesion << <NB_BLOCKS, NB_BLOCKS >> > (boid_positions, velocity, new_velocity, size);
+void cudaComputeVelocity(float* boid_positions, float* velocity, float *new_velocity, int size){
+	computeVelocity << <NB_BLOCKS, NB_BLOCKS >> > (boid_positions, velocity, new_velocity, size);
 }
 
 __global__ 
