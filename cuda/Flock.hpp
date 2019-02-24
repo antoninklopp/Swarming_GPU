@@ -9,7 +9,7 @@
 #include <cuda.h>
 #include <cuda_runtime.h>
 
-#define NB_OF_BOIDS 1000
+#define NB_OF_BOIDS 100
 
 class Flock {
 

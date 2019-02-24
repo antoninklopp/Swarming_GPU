@@ -4,7 +4,7 @@ using namespace std;
 
 Flock::Flock(Color color) {
 
-	int nb_of_boids = 1000;
+	int nb_of_boids = 10;
 
 	for (int i = 0; i < nb_of_boids; i++) {
 

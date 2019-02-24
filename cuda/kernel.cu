@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <iostream>
 
-#define NB_OF_BOIDS 1000
+#define NB_OF_BOIDS 100
 #define NB_BLOCKS 64
 #define VISION_DISTANCE 2
 #define COHESION_PARAMETER 50
